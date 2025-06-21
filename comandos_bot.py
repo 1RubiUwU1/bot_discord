@@ -4,26 +4,12 @@ import firebase_admin
 from firebase_admin import credentials, db
 import datetime
 import os
-import json  # <--- ¡Faltaba esto!
 
 # Lista de comandos registrados para el embed de ayuda
 comandos_registrados = []
 
 # Variable global para almacenar el enlace temporalmente
 link_grok = ""
-
-# Inicializar Firebase desde variable de entorno JSON
-raw_json = os.getenv("fire")
-
-# ✅ Así SÍ: reemplaza "\\n" por "\n" (doble → real salto de línea)
-raw_json = os.getenv("fire").replace('\\n', '\n')
-cred_dict = json.loads(raw_json)
-
-if not firebase_admin._apps:
-    cred = credentials.Certificate(cred_dict)
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://fotos-b8a54-default-rtdb.firebaseio.com/'
-    })
 
 # Registrar comando para ayuda
 def crear_comando(nombre, descripcion, uso):
@@ -49,8 +35,15 @@ def actualizarz(link):
         return embed("❌ Enlace inválido", "Debe comenzar con `http://` o `https://`")
 
     try:
-        # Ya está inicializado arriba, no repetir credenciales
+        # Inicializar Firebase si no está listo
+        if not firebase_admin._apps:
+            ruta_credenciales = os.path.join(os.path.dirname(__file__), "fire.json")
+            cred = credentials.Certificate(ruta_credenciales)
+            firebase_admin.initialize_app(cred, {
+                'databaseURL': 'https://fotos-b8a54-default-rtdb.firebaseio.com/'
+            })
 
+        # ? Sobrescribir el nodo 'link1' dentro de 'links'
         ref = db.reference('links/link1')
         ref.set({
             'link': link,
