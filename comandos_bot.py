@@ -37,7 +37,7 @@ def actualizarz(link):
     try:
         # Inicializar Firebase si no está listo
         if not firebase_admin._apps:
-            ruta_credenciales = os.path.join(os.path.dirname(__file__), "fire.json")
+            ruta_credenciales = os.path.join(os.path.dirname(__file__), os.getenv("fire"))
             cred = credentials.Certificate(ruta_credenciales)
             firebase_admin.initialize_app(cred, {
                 'databaseURL': 'https://fotos-b8a54-default-rtdb.firebaseio.com/'
