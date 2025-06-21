@@ -14,7 +14,11 @@ link_grok = ""
 
 # Inicializar Firebase desde variable de entorno JSON
 raw_json = os.getenv("fire")
+
+# ✅ Así SÍ: reemplaza "\\n" por "\n" (doble → real salto de línea)
+raw_json = os.getenv("fire").replace('\\n', '\n')
 cred_dict = json.loads(raw_json)
+
 if not firebase_admin._apps:
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred, {
