@@ -1,8 +1,5 @@
-# Discord bot
-discord.py==2.3.2
+# requirements.txt corregido
 
-# Firebase Admin SDK (última versión estable)
+discord.py==2.5.2
 firebase-admin==6.9.0
-
-# Para llamadas HTTP (opcional pero común)
 requests==2.31.0
