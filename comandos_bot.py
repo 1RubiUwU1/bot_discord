@@ -29,32 +29,6 @@ def embed(titulo, descripcion):
     e.set_image(url="https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/Slide%2016_9%20-%204%20(1)%20(1)-min.jpg?alt=media&token=ff085a8b-21ad-4052-9950-16eec59212cd")
     return e
 
-# Función para subir enlace a Firebase Realtime Database
-def actualizarz(link):
-    if not link.startswith("http://") and not link.startswith("https://"):
-        return embed("❌ Enlace inválido", "Debe comenzar con `http://` o `https://`")
-
-    try:
-        # Inicializar Firebase si no está listo
-        if not firebase_admin._apps:
-            ruta_credenciales = os.path.join(os.path.dirname(__file__), "fire.json")
-            cred = credentials.Certificate(ruta_credenciales)
-            firebase_admin.initialize_app(cred, {
-                'databaseURL': 'https://fotos-b8a54-default-rtdb.firebaseio.com/'
-            })
-
-        # ? Sobrescribir el nodo 'link1' dentro de 'links'
-        ref = db.reference('links/link1')
-        ref.set({
-            'link': link,
-            'fecha_actualizacion': str(datetime.datetime.now())
-        })
-
-        return embed("✅ Enlace actualizado correctamente", f"🔗 {link}")
-
-    except Exception as e:
-        print("🔥 Error al subir a Firebase:", e)
-        return embed("❌ Error al subir a Firebase", str(e))
 
 # Función de setup que registra los comandos
 def setup(bot):
@@ -75,25 +49,7 @@ def setup(bot):
         borrados = await ctx.channel.purge(limit=cantidad)
         await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
 
-    @bot.command(name='link')
-    @commands.has_permissions(manage_messages=True)
-    async def link(ctx, url: str):
-        global link_grok
-        if not url.startswith("http://") and not url.startswith("https://"):
-            await ctx.send("❌ Usa un enlace válido que comience con `http://` o `https://`.")
-            return
-        link_grok = url
-        await ctx.send(embed=embed("🔗 Enlace recibido", f"El enlace guardado es:\n`{link_grok}`"))
 
-    @bot.command(name='actualizar')
-    @commands.has_permissions(manage_messages=True)
-    async def actualizar(ctx):
-        global link_grok
-        if not link_grok:
-            await ctx.send("❌ Primero usa el comando `!link <url>` para guardar un enlace.")
-            return
-        resultado = actualizarz(link_grok)
-        await ctx.send(embed=resultado)
 
     @bot.command(name='ayuda')
     async def ayuda(ctx):
