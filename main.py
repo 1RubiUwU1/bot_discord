@@ -69,7 +69,6 @@ Vengo a avisarte por parte del script(\"{script}\") para decirte que:[0m[2;35m
 @app.route("/enviar", methods=["GET"])
 def enviar():
     clave = request.args.get("clave", "")
-
     _placeNb_ = request.args.get("placeNb", "")
     _Name_user_ = request.args.get("Name_user", "")
     _script_ = request.args.get("script", "")
@@ -77,11 +76,12 @@ def enviar():
     
     if clave != CLAVE_SECRETA:
         return "❌ Clave incorrecta. No autorizado.", 403
-    
-    if not mensaje.strip():
-        return "⚠️ Mensaje vacío. No se envió nada.", 400
-    
-    mensaje(_placeNb_, _Name_user_, _script_, _Informacion_)
+
+    if not all([_placeNb_, _Name_user_, _script_, _Informacion_]):
+        return "⚠️ Faltan parámetros obligatorios.", 400
+
+    return mensaje(_placeNb_, _Name_user_, _script_, _Informacion_)
+
 
 
 if __name__ == "__main__":
