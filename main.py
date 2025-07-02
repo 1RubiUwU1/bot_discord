@@ -3,8 +3,10 @@ import asyncio
 import discord
 from discord.ext import commands
 from flask import Flask, request
+from flask_cors import CORS
 import requests
 import threading
+
 
 # ========== Configuración del BOT ==========
 TOKEN = os.getenv("DISCORD_TOKEN")  # Asegúrate de definirla en el entorno
@@ -19,6 +21,7 @@ comandos_bot.setup(bot)
 
 # ========== Configuración de Flask ==========
 app = Flask(__name__)
+CORS(app) 
 
 WEBHOOK_URL = "https://discord.com/api/webhooks/1389844080741060678/uaV4LqiNV6cTZrHl_LsN87M76_C6Ml2vU0J9trt0WD_o_GpMnKVXUIjmD8pJVNgnIkja"
 CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"  # ! Cámbiala a algo fuerte
