@@ -1,7 +1,5 @@
 from discord.ext import commands
 import discord
-import firebase_admin
-from firebase_admin import credentials, db
 import datetime
 import os
 
