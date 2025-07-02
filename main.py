@@ -21,7 +21,6 @@ def enviar():
 
     contenido = {
         "content": mensaje,
-        "username": "Webhook desde GET"
     }
 
     try:
