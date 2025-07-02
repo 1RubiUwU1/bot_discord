@@ -20,8 +20,8 @@ comandos_bot.setup(bot)
 # ========== Configuración de Flask ==========
 app = Flask(__name__)
 
-WEBHOOK_URL = "https://discord.com/api/webhooks/1387516322941894686/EwHdpFHRis-BkgFLh7f9tHUBUB3REd_-qcr9yHgT4aaZu3CSs0NhH266LBAOmB8cKftB"
-CLAVE_SECRETA = "midiscordkey2025"  # ! Cámbiala a algo fuerte
+WEBHOOK_URL = "https://discord.com/api/webhooks/1389844080741060678/uaV4LqiNV6cTZrHl_LsN87M76_C6Ml2vU0J9trt0WD_o_GpMnKVXUIjmD8pJVNgnIkja"
+CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"  # ! Cámbiala a algo fuerte
 
 @app.route("/enviar", methods=["GET"])
 def enviar():
