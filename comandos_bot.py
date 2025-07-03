@@ -1,7 +1,5 @@
 from discord.ext import commands
 import discord
-import firebase_admin
-from firebase_admin import credentials, db
 import datetime
 import os
 
@@ -9,7 +7,6 @@ import os
 comandos_registrados = []
 
 # Variable global para almacenar el enlace temporalmente
-link_grok = ""
 
 # Registrar comando para ayuda
 def crear_comando(nombre, descripcion, uso):
@@ -36,7 +33,7 @@ def setup(bot):
     # Registrar comandos para ayuda
     crear_comando('BORRAR', 'Borra mensajes del canal.', '!borrar <cantidad>')
     crear_comando("MI ID:", "Saca la id para el script poing","!ID")
-    crear_comando('AYUDA:', 'Muestra los comandos disponibles.', '!ayuda')
+    crear_comando('AYUDA:', 'Muestra los comandos disponibles.', '!help')
 
     @bot.command(name='borrar')
     @commands.has_permissions(manage_messages=True)
@@ -48,7 +45,7 @@ def setup(bot):
         borrados = await ctx.channel.purge(limit=cantidad)
         await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
     
-    @bot.command(name="mi_id")
+    @bot.command(name="ID")
     async def mi_id(ctx):
         user_id = ctx.author.id
         username = ctx.author.name
