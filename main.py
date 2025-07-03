@@ -19,20 +19,7 @@ comandos_bot.setup(bot)
 async def on_ready():
     print(f"🤖 Bot conectado como {bot.user}")
 
-# Lista de comandos registrados para el embed de ayuda
-comandos_registrados = []
 
-# Variable global para almacenar el enlace temporalmente
-
-# Registrar comando para ayuda
-def crear_comando(nombre, descripcion, uso):
-    comandos_registrados.append({
-        "nombre": nombre,
-        "descripcion": descripcion,
-        "uso": uso
-    })
-
-# Función para crear embeds de respuesta
 def embed(titulo, descripcion):
     e = discord.Embed(
         title=titulo,
@@ -42,10 +29,6 @@ def embed(titulo, descripcion):
     e.set_image(url="https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/Slide%2016_9%20-%204%20(1)%20(1)-min.jpg?alt=media&token=ff085a8b-21ad-4052-9950-16eec59212cd")
     return e
 
-
-crear_comando('BORRAR', 'Borra mensajes del canal.', '!borrar <cantidad>')
-crear_comando("MI ID:", "Saca la id para el script poing","!ID")
-crear_comando('AYUDA:', 'Muestra los comandos disponibles.', '!help')
 
 @bot.command(name="ID")
 async def mi_id(ctx):
@@ -75,16 +58,6 @@ async def mi_id(ctx):
     await ctx.send(f"🆔 Tu ID de Discord es: `{user_id}`")
 
 
-@commands.command(name='ayuda')
-async def ayuda(self, ctx):
-    ayuda_embed = discord.Embed(title="📘 Comandos disponibles", color=discord.Color.green())
-    for cmd in comandos_registrados:
-        ayuda_embed.add_field(
-            name=f"!{cmd['nombre']}",
-            value=f"{cmd['descripcion']}\nUso: ```diff\n{cmd['uso']}```",
-            inline=False
-        )
-    await ctx.send(embed=ayuda_embed)
 
 @bot.event
 async def on_command_error(ctx, error):
