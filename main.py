@@ -28,7 +28,7 @@ def mensaje(placeNb, Name_user, script, Informacion):
 #? │      🛠 MENSAJE 🛠        │
 #? ╰───────────────────────────╯
     EMBEB = {
-        "content": f"# OYEE @{Name_user}",
+        "content": f"<@{Name_user}>",
         "embeds": [
             {
             "description": f"""```ansi
