@@ -5,7 +5,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import threading
 import requests
-import comandos_bot
+import asyncio
 
 # ===================== DISCORD BOT ======================
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -13,7 +13,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
 
 # ===================== FLASK API ========================
 app = Flask(__name__)
@@ -41,7 +40,7 @@ def mensaje(placeNb, Name_user, script, Informacion):
             {
                 "description": f"""```ansi
 [2;35m[1;35m
-Vengo a avisarte por parte del script(\"{script}\") para decirte que:[0m[2;35m[0m
+Vengo a avisarte por parte del script("{script}") para decirte que:[0m[2;35m[0m
 ``````ansi
 [2;34m
 ------>
@@ -83,15 +82,14 @@ def enviar():
 
     return mensaje(placeNb, Name_user, script, Informacion)
 
-# ===================== EJECUCIÓN MULTIHILO ========================
+# ===================== INICIO ========================
 def run_flask():
     app.run(host="0.0.0.0", port=8080)
-# ==== ASYNC STARTUP ====
+
 async def main():
-    await bot.load_extension("comandos_bot")  # ✅ usar await
+    await bot.load_extension("comandos_bot")  # ✅ se espera correctamente
     await bot.start(TOKEN)
 
 if __name__ == "__main__":
     threading.Thread(target=run_flask).start()
-    asyncio.run(main())  # ✅ corre el bot desde asyncio
-
+    asyncio.run(main())  # ✅ arranque limpio y correcto
