@@ -13,8 +13,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-bot.load_extension("comandos_bot")
-
 
 
 # ===================== FLASK API ========================
@@ -88,7 +86,12 @@ def enviar():
 # ===================== EJECUCIÓN MULTIHILO ========================
 def run_flask():
     app.run(host="0.0.0.0", port=8080)
+# ==== ASYNC STARTUP ====
+async def main():
+    await bot.load_extension("comandos_bot")  # ✅ usar await
+    await bot.start(TOKEN)
+
 if __name__ == "__main__":
     threading.Thread(target=run_flask).start()
-    bot.run(TOKEN)
+    asyncio.run(main())  # ✅ corre el bot desde asyncio
 
