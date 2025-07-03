@@ -13,7 +13,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-comandos_bot.setup(bot)
+bot.load_extension("comandos_bot")
 
 
 
