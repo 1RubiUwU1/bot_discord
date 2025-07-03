@@ -48,8 +48,13 @@ def setup(bot):
     @bot.command(name="ID")
     async def mi_id(ctx):
         user_id = ctx.author.id
-        username = ctx.author.name
-        await ctx.send(f"👤 Hola **{username}**, tu ID es: `{user_id}`")
+        mention = ctx.author.mention
+
+        # Primer mensaje con ping
+        await ctx.send(f"👋 Hola {mention}")
+
+        # Segundo mensaje con el ID
+        await ctx.send(f"🆔 Tu ID de Discord es: `{user_id}`")
 
 
     @bot.command(name='ayuda')
