@@ -13,7 +13,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-comandos_bot.setup(bot)
 
 # ===================== FLASK API ========================
 app = Flask(__name__)
@@ -89,4 +88,5 @@ def run_flask():
 
 if __name__ == "__main__":
     threading.Thread(target=run_flask).start()
+    comandos_bot.setup(bot)
     bot.run(TOKEN)
