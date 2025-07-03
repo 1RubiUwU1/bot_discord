@@ -1,5 +1,7 @@
 from discord.ext import commands
 import discord
+import firebase_admin
+from firebase_admin import credentials, db
 import datetime
 import os
 
@@ -32,10 +34,9 @@ def embed(titulo, descripcion):
 def setup(bot):
 
     # Registrar comandos para ayuda
-    crear_comando('borrar', 'Borra mensajes del canal.', '!borrar <cantidad>')
-    crear_comando('link', 'Guarda un enlace para subirlo luego.', '!link <url>')
-    crear_comando('actualizar', 'Sube el enlace guardado a Firebase.', '!actualizar')
-    crear_comando('ayuda', 'Muestra los comandos disponibles.', '!ayuda')
+    crear_comando('BORRAR', 'Borra mensajes del canal.', '!borrar <cantidad>')
+    crear_comando("MI ID:", "Saca la id para el script poing","!ID")
+    crear_comando('AYUDA:', 'Muestra los comandos disponibles.', '!ayuda')
 
     @bot.command(name='borrar')
     @commands.has_permissions(manage_messages=True)
@@ -46,7 +47,12 @@ def setup(bot):
         await ctx.message.delete()
         borrados = await ctx.channel.purge(limit=cantidad)
         await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
-
+    
+    @bot.command(name="mi_id")
+    async def mi_id(ctx):
+        user_id = ctx.author.id
+        username = ctx.author.name
+        await ctx.send(f"👤 Hola **{username}**, tu ID es: `{user_id}`")
 
 
     @bot.command(name='ayuda')
