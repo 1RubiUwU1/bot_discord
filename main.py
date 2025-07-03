@@ -19,11 +19,6 @@ comandos_bot.setup(bot)
 async def on_ready():
     print(f"🤖 Bot conectado como {bot.user}")
 
-@bot.command(name="mi_id")
-async def mi_id(ctx):
-    user_id = ctx.author.id
-    username = ctx.author.name
-    await ctx.send(f"👤 Hola **{username}**, tu ID es: `{user_id}`")
 # Lista de comandos registrados para el embed de ayuda
 comandos_registrados = []
 
@@ -52,6 +47,12 @@ crear_comando('BORRAR', 'Borra mensajes del canal.', '!borrar <cantidad>')
 crear_comando("MI ID:", "Saca la id para el script poing","!ID")
 crear_comando('AYUDA:', 'Muestra los comandos disponibles.', '!help')
 
+@bot.command(name="ID")
+async def mi_id(ctx):
+    user_id = ctx.author.id
+    username = ctx.author.name
+    await ctx.send(f"👤 Hola **{username}**, tu ID es: `{user_id}`")
+
 @bot.command(name='borrar')
 @commands.has_permissions(manage_messages=True)
 async def borrar(ctx, cantidad: int):
@@ -74,11 +75,15 @@ async def mi_id(ctx):
     await ctx.send(f"🆔 Tu ID de Discord es: `{user_id}`")
 
 
-@bot.command(name='ayuda')
-async def ayuda(ctx):
+@commands.command(name='ayuda')
+async def ayuda(self, ctx):
     ayuda_embed = discord.Embed(title="📘 Comandos disponibles", color=discord.Color.green())
     for cmd in comandos_registrados:
-        ayuda_embed.add_field(name=f"!{cmd['nombre']}", value=f"{cmd['descripcion']}\nUso: ```diff\n{cmd['uso']}```", inline=False)
+        ayuda_embed.add_field(
+            name=f"!{cmd['nombre']}",
+            value=f"{cmd['descripcion']}\nUso: ```diff\n{cmd['uso']}```",
+            inline=False
+        )
     await ctx.send(embed=ayuda_embed)
 
 @bot.event
