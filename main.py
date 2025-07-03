@@ -28,11 +28,7 @@ def embed(titulo, descripcion):
 async def on_ready():
     print(f"🤖 Bot conectado como {bot.user}")
 
-@bot.command(name="mi_id")
-async def mi_id(ctx):
-    user_id = ctx.author.id
-    username = ctx.author.name
-    await ctx.send(f"👤 Hola **{username}**, tu ID es: `{user_id}`")
+
 
 @bot.command(name='borrar')
 @commands.has_permissions(manage_messages=True)
@@ -44,6 +40,17 @@ async def borrar(ctx, cantidad: int):
     borrados = await ctx.channel.purge(limit=cantidad)
     await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
 
+@bot.command(name="mi_id")
+async def mi_id(ctx):
+    user_id = ctx.author.id
+    username = ctx.author.name
+
+    embed = discord.Embed(
+        title="👤 Tu ID de usuario",
+        description=f"Hola **{username}**, tu ID es: `{user_id}`",
+        color=discord.Color.green()
+    )
+    await ctx.send(embed=embed)
 # ===================== FLASK API ========================
 app = Flask(__name__)
 CORS(app)
