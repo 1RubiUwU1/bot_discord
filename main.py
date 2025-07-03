@@ -5,7 +5,6 @@ from flask import Flask, request
 from flask_cors import CORS
 import threading
 import requests
-import comandos_bot
 
 # ===================== DISCORD BOT ======================
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -13,13 +12,8 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-comandos_bot.setup(bot)
 
-@bot.event
-async def on_ready():
-    print(f"🤖 Bot conectado como {bot.user}")
-
-
+# Función para crear embeds de respuesta
 def embed(titulo, descripcion):
     e = discord.Embed(
         title=titulo,
@@ -30,7 +24,11 @@ def embed(titulo, descripcion):
     return e
 
 
-@bot.command(name="ID")
+@bot.event
+async def on_ready():
+    print(f"🤖 Bot conectado como {bot.user}")
+
+@bot.command(name="mi_id")
 async def mi_id(ctx):
     user_id = ctx.author.id
     username = ctx.author.name
@@ -45,31 +43,6 @@ async def borrar(ctx, cantidad: int):
     await ctx.message.delete()
     borrados = await ctx.channel.purge(limit=cantidad)
     await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
-    
-@bot.command(name="ID")
-async def mi_id(ctx):
-    user_id = ctx.author.id
-    mention = ctx.author.mention
-
-        # Primer mensaje con ping
-    await ctx.send(f"👋 Hola {mention}")
-
-        # Segundo mensaje con el ID
-    await ctx.send(f"🆔 Tu ID de Discord es: `{user_id}`")
-
-
-
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.MissingPermissions):
-        await ctx.send("❌ No tienes permiso para usar este comando.")
-    elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("❌ Faltan argumentos para este comando.")
-    elif isinstance(error, commands.CommandNotFound):
-        pass  # No mostrar error si el comando no existe
-    else:
-        await ctx.send("❌ Ocurrió un error inesperado.")
-        print("🧨 Error:", error)
 
 # ===================== FLASK API ========================
 app = Flask(__name__)
@@ -98,12 +71,15 @@ def mensaje(placeNb, Name_user, script, Informacion):
                 "description": f"""```ansi
 [2;35m[1;35m
 Vengo a avisarte por parte del script(\"{script}\") para decirte que:[0m[2;35m[0m
-``````ansi
+```
+```ansi
 [2;34m
 ------>
 {Informacion}
 ------>[0m
-``````ansi
+```
+
+```ansi
 [2;35m[1;35m¡Bueno, eso era todo, bye! No olvides derecomendarnos con tus amigos shiii~[0m
 ```""",
                 "color": 16121600,
