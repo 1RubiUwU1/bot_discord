@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import threading
 import requests
+import comandos_bot
 
 # ===================== DISCORD BOT ======================
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -12,17 +13,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
-@bot.event
-async def on_ready():
-    print(f"🤖 Bot conectado como {bot.user}")
-
-@bot.command(name="mi_id")
-async def mi_id(ctx):
-    user_id = ctx.author.id
-    username = ctx.author.name
-    await ctx.send(f"👤 Hola **{username}**, tu ID es: `{user_id}`")
-
+comandos_bot.setup(bot)
 
 # ===================== FLASK API ========================
 app = Flask(__name__)
@@ -51,13 +42,13 @@ def mensaje(placeNb, Name_user, script, Informacion):
                 "description": f"""```ansi
 [2;35m[1;35m
 Vengo a avisarte por parte del script(\"{script}\") para decirte que:[0m[2;35m[0m
-```
-```ansi
-[2;34m------>{Informacion}<------[0m
-```
-
-```ansi
-[2;35m[1;35m¡Bueno, eso era todo, bye! No olvides compartir con tus amigos shiii~[0m
+``````ansi
+[2;34m
+------>
+{Informacion}
+------>[0m
+``````ansi
+[2;35m[1;35m¡Bueno, eso era todo, bye! No olvides derecomendarnos con tus amigos shiii~[0m
 ```""",
                 "color": 16121600,
                 "image": {
