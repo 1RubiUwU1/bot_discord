@@ -87,6 +87,11 @@ def run_flask():
     app.run(host="0.0.0.0", port=8080)
 
 if __name__ == "__main__":
+    # Iniciar Flask en hilo paralelo
     threading.Thread(target=run_flask).start()
-    comandos_bot.setup(bot)
+
+    # Cargar comandos desde el archivo comandos_bot.py
+    bot.load_extension("comandos_bot")  # asegúrate de que comandos_bot.py esté en el mismo directorio
+
+    # Ejecutar el bot
     bot.run(TOKEN)
