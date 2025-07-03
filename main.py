@@ -36,14 +36,11 @@ def mensaje(placeNb, Name_user, script, Informacion):
 
 Vengo a avisarte por parte del script(\"{script}\") para decirte que:[0m[2;35m[0m
 ```
-
 ```ansi
 [2;34m------->
 {Informacion}
 ------->[0m
-
 ```
-
 ```ansi
 [2;35m[2;35m[1;35m¡Bueno, todo eso te tenía comunicar así que bye! A y no te olvidas de recordarnos con tus amigos shiiii~[0m[2;35m[0m[2;35m[0m
 ```""",
