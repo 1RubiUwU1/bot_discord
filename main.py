@@ -5,7 +5,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import threading
 import requests
-import comandos_bot
+import asyncio
 
 # ===================== DISCORD BOT ======================
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -43,7 +43,7 @@ def mensaje(placeNb, Name_user, script, Informacion):
 Vengo a avisarte por parte del script(\"{script}\") para decirte que:[0m[2;35m[0m
 ``````ansi
 [2;34m
------->
+------>  
 {Informacion}
 ------>[0m
 ``````ansi
@@ -82,16 +82,15 @@ def enviar():
 
     return mensaje(placeNb, Name_user, script, Informacion)
 
-# ===================== EJECUCIÓN MULTIHILO ========================
+# ===================== FLASK EN HILO SEPARADO =====================
 def run_flask():
     app.run(host="0.0.0.0", port=8080)
 
-if __name__ == "__main__":
-    # Iniciar Flask en hilo paralelo
+# ===================== ARRANQUE PRINCIPAL =========================
+async def main():
     threading.Thread(target=run_flask).start()
+    await bot.load_extension("comandos_bot")
+    await bot.start(TOKEN)
 
-    # Cargar comandos desde el archivo comandos_bot.py
-    bot.load_extension("comandos_bot")  # asegúrate de que comandos_bot.py esté en el mismo directorio
-
-    # Ejecutar el bot
-    bot.run(TOKEN)
+if __name__ == "__main__":
+    asyncio.run(main())
