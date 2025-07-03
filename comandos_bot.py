@@ -1,12 +1,8 @@
 from discord.ext import commands
 import discord
-import datetime
-import os
 
-# Lista de comandos registrados para el embed de ayuda
 comandos_registrados = []
 
-# Registrar comando para ayuda
 def crear_comando(nombre, descripcion, uso):
     comandos_registrados.append({
         "nombre": nombre,
@@ -14,7 +10,6 @@ def crear_comando(nombre, descripcion, uso):
         "uso": uso
     })
 
-# Función para crear embeds de respuesta
 def embed(titulo, descripcion):
     e = discord.Embed(
         title=titulo,
@@ -24,25 +19,13 @@ def embed(titulo, descripcion):
     e.set_image(url="https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/Slide%2016_9%20-%204%20(1)%20(1)-min.jpg?alt=media&token=ff085a8b-21ad-4052-9950-16eec59212cd")
     return e
 
-# ========== COMANDOS ==========
-@commands.command(name="borrar")
-@commands.has_permissions(manage_messages=True)
-async def borrar(ctx, cantidad: int):
-    if cantidad < 1 or cantidad > 100:
-        await ctx.send("❌ Número entre 1 y 100 por favor.")
-        return
-    await ctx.message.delete()
-    borrados = await ctx.channel.purge(limit=cantidad)
-    await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
+# === Comandos definidos sin decorador ===
 
-@commands.command(name="ID")
 async def mi_id(ctx):
     user_id = ctx.author.id
     mention = ctx.author.mention
-    await ctx.send(f"👋 Hola {mention}")
-    await ctx.send(f"🆔 Tu ID de Discord es: `{user_id}`")
+    await ctx.send(f"👋 Hola {mention}\n🆔 Tu ID de Discord es: `{user_id}`")
 
-@commands.command(name="ayuda")
 async def ayuda(ctx):
     ayuda_embed = discord.Embed(title="📘 Comandos disponibles", color=discord.Color.green())
     for cmd in comandos_registrados:
@@ -53,15 +36,27 @@ async def ayuda(ctx):
         )
     await ctx.send(embed=ayuda_embed)
 
-# ========== SETUP ==========
+# Comando con permisos
+@commands.has_permissions(manage_messages=True)
+async def borrar(ctx, cantidad: int):
+    if cantidad < 1 or cantidad > 100:
+        await ctx.send("❌ Número entre 1 y 100 por favor.")
+        return
+    await ctx.message.delete()
+    borrados = await ctx.channel.purge(limit=cantidad)
+    await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
+
+# === Registrar comandos en el bot ===
 
 def setup(bot):
-    # Registrar comandos
-    bot.add_command(borrar)
-    bot.add_command(mi_id)
-    bot.add_command(ayuda)
+    bot.add_command(commands.Command(mi_id, name="ID"))
+    bot.add_command(commands.Command(ayuda, name="ayuda"))
+    bot.add_command(commands.Command(borrar, name="borrar"))
 
-    # Agregar errores
+    crear_comando("MI ID", "Saca tu ID para el script ping", "!ID")
+    crear_comando("AYUDA", "Muestra los comandos disponibles.", "!ayuda")
+    crear_comando("BORRAR", "Borra mensajes del canal.", "!borrar <cantidad>")
+
     @bot.event
     async def on_command_error(ctx, error):
         if isinstance(error, commands.MissingPermissions):
@@ -73,8 +68,3 @@ def setup(bot):
         else:
             await ctx.send("❌ Ocurrió un error inesperado.")
             print("🧨 Error:", error)
-
-    # Registrar ayuda para !ayuda
-    crear_comando('BORRAR', 'Borra mensajes del canal.', '!borrar <cantidad>')
-    crear_comando("MI ID", "Saca tu ID para el script ping", "!ID")
-    crear_comando('AYUDA', 'Muestra los comandos disponibles.', '!ayuda')
