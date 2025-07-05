@@ -43,7 +43,8 @@ Vengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[2;35m[0m
 {Informacion}
 ------>[0m
 ``````ansi
-[2;35m[1;35m¡Bueno, eso era todo, bye! No olvides derecomendarnos con tus amigos shiii~[0m
+[2;35m[1;35m
+¡Bueno, eso era todo, bye! No olvides de recomendarnos con tus amigos shiii~[0m
 ```""",
             "color": 16121600,
             "image": {
@@ -68,22 +69,19 @@ Vengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[2;35m[0m
 
 @app.route("/enviar", methods=["GET"])
 def enviar():
-    clave = request.args.get("Nkart", "")
+    clave = request.args.get("_", "")
+
     _placeNb_ = request.args.get("placeNb", "")
     _Name_user_ = request.args.get("Name_user", "")
     _Informacion_ = request.args.get("Informacion", "")
-
+    
     if clave != CLAVE_SECRETA:
         return "❌ Clave incorrecta. No autorizado.", 403
-
-    if not _Informacion_ or not _Informacion_.strip():
+    
+    if not mensaje.strip():
         return "⚠️ Mensaje vacío. No se envió nada.", 400
-
-    if _placeNb_ not in PING_ID:
-        return f"❌ Lugar '{_placeNb_}' no registrado.", 400
-
-    return mensaje(_placeNb_, _Name_user_, _Informacion_)
-
+    
+    mensaje(_placeNb_, _Name_user_, _Informacion_)
 
 
 if __name__ == "__main__":
