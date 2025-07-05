@@ -32,7 +32,8 @@ def mensaje(placeNb, Name_user, Informacion):
 #> ╰───────────────────────────╯
     EMBEB = {
         "title": "Holiiiii...!",
-        "content": f"# OYEE <@{Name_user}>",
+        "content": f"<@{Name_user}>",
+        "allowed_mentions": {"users": [Name_user]},
         "embeds": [
             {
             "description": f"""```ansi
