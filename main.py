@@ -31,11 +31,11 @@ def mensaje(placeNb, Name_user, Informacion):
 #> │      🛠 MENSAJE 🛠        │
 #> ╰───────────────────────────╯
     EMBEB = {
-        "title": "Holiiiii...!",
-        "content": f"<@{Name_user}>",
+        "content": f"# Holiiiii...! <@{Name_user}>",
         "allowed_mentions": {"users": [Name_user]},
         "embeds": [
             {
+            "title": "Holiiiii...!",
             "description": f"""```ansi
 [2;35m[1;35m[1;35m[1;35mVengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[1;35m[0m[1;35m[0m[2;35m[0m
 ``````ansi
