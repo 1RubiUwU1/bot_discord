@@ -79,8 +79,6 @@ def enviar():
     if clave != CLAVE_SECRETA:
         return "❌ Clave incorrecta. No autorizado.", 403
 
-    if not _Informacion_ or not _Informacion_.strip():
-        return "⚠️ Mensaje vacío. No se envió nada.", 400
 
     if _placeNb_ not in PING_ID:
         return f"❌ Lugar '{_placeNb_}' no registrado.", 400
