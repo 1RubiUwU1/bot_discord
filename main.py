@@ -69,19 +69,22 @@ Vengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[2;35m[0m
 
 @app.route("/enviar", methods=["GET"])
 def enviar():
-    clave = request.args.get("_", "")
+    clave = request.args.get("Nkart", "")
+    _placeNb_ = request.args.get("IPFUEOPjd", "")
+    _Name_user_ = request.args.get("davvgfrF", "")
+    _Informacion_ = request.args.get("OIHDoihio", "")
 
-    _placeNb_ = request.args.get("placeNb", "")
-    _Name_user_ = request.args.get("Name_user", "")
-    _Informacion_ = request.args.get("Informacion", "")
-    
     if clave != CLAVE_SECRETA:
         return "❌ Clave incorrecta. No autorizado.", 403
-    
-    if not mensaje.strip():
+
+    if not _Informacion_ or not _Informacion_.strip():
         return "⚠️ Mensaje vacío. No se envió nada.", 400
-    
-    mensaje(_placeNb_, _Name_user_, _Informacion_)
+
+    if _placeNb_ not in PING_ID:
+        return f"❌ Lugar '{_placeNb_}' no registrado.", 400
+
+    return mensaje(_placeNb_, _Name_user_, _Informacion_)
+
 
 
 if __name__ == "__main__":
