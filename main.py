@@ -1,7 +1,64 @@
+import os
+import discord
+from discord.ext import commands
 from flask import Flask, request
 from flask_cors import CORS
+import threading
 import requests
-import os
+
+# ===================== DISCORD BOT ======================
+TOKEN = os.getenv("DISCORD_TOKEN")
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+# Función para crear embeds de respuesta
+def embed(titulo, descripcion):
+    e = discord.Embed(
+        title=titulo,
+        description=descripcion,
+        color=discord.Color.green()
+    )
+    e.set_image(url="https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/Slide%2016_9%20-%204%20(1)%20(1)-min.jpg?alt=media&token=ff085a8b-21ad-4052-9950-16eec59212cd")
+    return e
+
+
+@bot.event
+async def on_ready():
+    print(f"🤖 Bot conectado como {bot.user}")
+
+
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return  # * Ignora mensajes de otros bots (y de sí mismo)
+
+    await bot.process_commands(message)  # * Procesa los comandos correctamente
+
+
+@bot.command(name='borrar')
+@commands.has_permissions(manage_messages=True)
+async def borrar(ctx, cantidad: int):
+    if cantidad < 1 or cantidad > 100:
+        await ctx.send("❌ Número entre 1 y 100 por favor.")
+        return
+    await ctx.message.delete()
+    borrados = await ctx.channel.purge(limit=cantidad)
+    await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
+
+@bot.command(name="ID")
+async def ID(ctx):
+    user_id = ctx.author.id
+    username = ctx.author.name
+
+    embed = discord.Embed(
+        title="👤 Tu ID de usuario",
+        description=f"Hola **{username}**, tu ID es: `{user_id}`",
+        color=discord.Color.green()
+    )
+    await ctx.send(embed=embed)
+# ===================== FLASK API ========================
 
 app = Flask(__name__)
 CORS(app) 
@@ -35,6 +92,7 @@ def mensaje(placeNb, Name_user, Informacion):
         "allowed_mentions": {"users": [Name_user]},
         "embeds": [
             {
+            "title": "Holiiiii...!",
             "description": f"""```ansi
 [2;35m[1;35m[1;35m[1;35mVengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[1;35m[0m[1;35m[0m[2;35m[0m
 ``````ansi
@@ -86,5 +144,10 @@ def enviar():
 
 
 
-if __name__ == "__main__":
+# ===================== EJECUCIÓN MULTIHILO ========================
+def run_flask():
     app.run(host="0.0.0.0", port=8080)
+
+if __name__ == "__main__":
+    threading.Thread(target=run_flask).start()
+    bot.run(TOKEN)
