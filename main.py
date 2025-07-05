@@ -1,17 +1,87 @@
-import discord
-from discord.ext import commands
+from flask import Flask, request
+from flask_cors import CORS
+import requests
 import os
 
-TOKEN = os.getenv("DISCORD_TOKEN")
-# TOKEN = 
+app = Flask(__name__)
+CORS(app) 
 
-intents = discord.Intents.default()
-intents.message_content = True
+WEBHOOK_URL = os.getenv("LINK")
+CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"
 
-bot = commands.Bot(command_prefix='!', intents=intents)
 
-# todo: Cargar comandos externos desde comandos.py
-import comandos_bot
-comandos_bot.setup(bot)
+PING_ID = {
+    "DEAD_RIELS": {
+        "ID": "1390085681803427971",
+        "SCRIPT": "AUTO BONOS"
+    },
+}
 
-bot.run(TOKEN)
+# https://botdiscord-api.up.railway.app/enviar?clave=CLAVE_SECRETA&placeNb=VALOR&Name_user=VALOR&script=VALOR&Informacion=VALOR
+
+def mensaje(placeNb, Name_user, Informacion):
+
+#? ╭───────────────────────────╮
+#? │        🛠 HOOKS 🛠        │
+#? ╰───────────────────────────╯
+    GENERAL = PING_ID[placeNb]
+    ID = GENERAL["ID"]
+    ST = GENERAL["SCRIPT"]
+#> ╭───────────────────────────╮
+#> │      🛠 MENSAJE 🛠        │
+#> ╰───────────────────────────╯
+    EMBEB = {
+        "title": "Holiiiii...!",
+        "content": f"# OYEE @{Name_user}",
+        "embeds": [
+            {
+            "description": f"""```ansi
+[2;35m[1;35m
+Vengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[2;35m[0m
+``````ansi
+[2;34------>
+{Informacion}
+------>[0m
+``````ansi
+[2;35m[1;35m¡Bueno, eso era todo, bye! No olvides derecomendarnos con tus amigos shiii~[0m
+```""",
+            "color": 16121600,
+            "image": {
+                "url": "https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/9f0db6ff6c059e1d14b1f37b69f55c21%201.png?alt=media&token=76744d86-5e4a-4676-8461-ea5095916b4e"
+            }
+            }
+        ],
+    }
+
+    try:
+        resp = requests.post(WEBHOOK_URL, json=EMBEB, params={"thread_id": ID})
+
+        if resp.status_code in (200, 204):
+            return "✅ Mensaje enviado al hilo de Discord", 200
+        else:
+            return f"❌ Error al enviar mensaje: {resp.status_code}\n{resp.text}", 500
+    except Exception as e:
+        return f"❌ Error en el servidor: {str(e)}", 500    
+    
+
+
+
+@app.route("/enviar", methods=["GET"])
+def enviar():
+    clave = request.args.get("_", "")
+
+    _placeNb_ = request.args.get("placeNb", "")
+    _Name_user_ = request.args.get("Name_user", "")
+    _Informacion_ = request.args.get("Informacion", "")
+    
+    if clave != CLAVE_SECRETA:
+        return "❌ Clave incorrecta. No autorizado.", 403
+    
+    if not mensaje.strip():
+        return "⚠️ Mensaje vacío. No se envió nada.", 400
+    
+    mensaje(_placeNb_, _Name_user_, _Informacion_)
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
