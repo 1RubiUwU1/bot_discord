@@ -68,7 +68,7 @@ Vengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[2;35m[0m
 
 @app.route("/enviar", methods=["GET"])
 def enviar():
-    clave = request.args.get("_", "")
+    clave = request.args.get("Nkart", "")
 
     _placeNb_ = request.args.get("placeNb", "")
     _Name_user_ = request.args.get("Name_user", "")
