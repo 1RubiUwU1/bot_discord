@@ -36,15 +36,13 @@ def mensaje(placeNb, Name_user, Informacion):
         "embeds": [
             {
             "description": f"""```ansi
-[2;35m[1;35m
-Vengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[2;35m[0m
+[2;35m[1;35m[1;35m[1;35mVengo a avisarte por parte del script(\"{ST}\") para decirte que:[0m[1;35m[0m[1;35m[0m[2;35m[0m
 ``````ansi
-[2;34------>
-{Informacion}
------->[0m
+[2;34m{Informacion}
+[0m
 ``````ansi
-[2;35m[1;35m
-¡Bueno, eso era todo, bye! No olvides de recomendarnos con tus amigos shiii~[0m
+[2;35m[1;35m¡Bueno, eso era todo, bye! No olvides de recomendarnos con tus amigos shiii~[0m[2;35m[0m
+
 ```""",
             "color": 16121600,
             "image": {
