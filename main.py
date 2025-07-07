@@ -13,14 +13,13 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 WEBHOOK_URL = os.getenv("LINK")
 CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"
 
+URL_JSON = "https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json"
+
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# ===================== 🔌 CARGAR JSON DE CLAVES ======================
-
-
-# ===================== 🤖 DISCORD BOT ======================
+# ===================== 🤖 BOT DE DISCORD ======================
 
 def embed(titulo, descripcion):
     e = discord.Embed(
@@ -69,13 +68,14 @@ CORS(app)
 
 def mensaje(placeNb, Name_user, Informacion):
     try:
-        with open("https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json", "r", encoding="utf-8") as f:
-            valores = json.load(f)
-    except json.JSONDecodeError as e:
-        print("❌ Error al cargar claves.json:", e)
-        valores = {}
+        response = requests.get(URL_JSON)
+        response.raise_for_status()
+        valores = response.json()
+    except Exception as e:
+        return f"❌ Error al obtener JSON remoto: {e}", 500
+
     if placeNb not in valores:
-        return f"❌ La clave '{placeNb}' no está registrada en claves.json", 400
+        return f"❌ La clave '{placeNb}' no está registrada en valor.json", 400
 
     ID = valores[placeNb]["ID"]
     ST = valores[placeNb]["SCRIPT"]
