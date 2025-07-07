@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask_cors import CORS
 import threading
 import requests
+import json
 
 # ===================== DISCORD BOT ======================
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -66,24 +67,27 @@ CORS(app)
 WEBHOOK_URL = os.getenv("LINK")
 CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"
 
+with open("claves.json", "r", encoding="utf-8") as f:
+    valores = json.load(f)
 
-PING_ID = {
-    "DEAD_RIELS": {
-        "ID": "1390085681803427971",
-        "SCRIPT": "AUTO BONOS"
-    },
-}
+
+#PING_ID = {
+#    "DEAD_RIELS": {
+#        "ID": "1390085681803427971",
+#        "SCRIPT": "AUTO BONOS"
+#    },
+#}
 
 # https://botdiscord-api.up.railway.app/enviar?clave=CLAVE_SECRETA&placeNb=VALOR&Name_user=VALOR&script=VALOR&Informacion=VALOR
 
 def mensaje(placeNb, Name_user, Informacion):
+    nombre = placeNb
 
 #? ╭───────────────────────────╮
 #? │        🛠 HOOKS 🛠        │
 #? ╰───────────────────────────╯
-    GENERAL = PING_ID[placeNb]
-    ID = GENERAL["ID"]
-    ST = GENERAL["SCRIPT"]
+    ID = valores[nombre]["ID"]
+    ST = valores[nombre]["SCRIPT"]
 #> ╭───────────────────────────╮
 #> │      🛠 MENSAJE 🛠        │
 #> ╰───────────────────────────╯
@@ -136,9 +140,6 @@ def enviar():
     if clave != CLAVE_SECRETA:
         return "❌ Clave incorrecta. No autorizado.", 403
 
-
-    if _placeNb_ not in PING_ID:
-        return f"❌ Lugar '{_placeNb_}' no registrado.", 400
 
     return mensaje(_placeNb_, _Name_user_, _Informacion_)
 
