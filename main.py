@@ -60,6 +60,22 @@ async def ID(ctx):
         color=discord.Color.green()
     )
     await ctx.send(embed=e)
+@bot.command(name="invitacion")
+
+@commands.has_permissions(administrator=True)
+async def crear_invitacion(ctx):
+    canal = ctx.channel  # o el canal que tú elijas, por ejemplo con ID
+    try:
+        invitacion = await canal.create_invite(
+            max_age=0,       # 0 = nunca expira
+            max_uses=0,      # 0 = usos ilimitados
+            unique=False     # False = reutilizar si ya existe una igual
+        )
+        await ctx.send(f"🔗 Invitación permanente: {invitacion.url}")
+    except discord.Forbidden:
+        await ctx.send("❌ No tengo permisos para crear invitaciones en este canal.")
+    except Exception as e:
+        await ctx.send(f"❌ Error al crear la invitación: {e}")
 
 # ===================== 🌐 API FLASK ======================
 
