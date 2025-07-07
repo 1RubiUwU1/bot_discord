@@ -19,12 +19,6 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 # ===================== 🔌 CARGAR JSON DE CLAVES ======================
 
-try:
-    with open("https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json", "r", encoding="utf-8") as f:
-        valores = json.load(f)
-except json.JSONDecodeError as e:
-    print("❌ Error al cargar claves.json:", e)
-    valores = {}
 
 # ===================== 🤖 DISCORD BOT ======================
 
@@ -74,6 +68,12 @@ app = Flask(__name__)
 CORS(app)
 
 def mensaje(placeNb, Name_user, Informacion):
+    try:
+        with open("https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json", "r", encoding="utf-8") as f:
+            valores = json.load(f)
+    except json.JSONDecodeError as e:
+        print("❌ Error al cargar claves.json:", e)
+        valores = {}
     if placeNb not in valores:
         return f"❌ La clave '{placeNb}' no está registrada en claves.json", 400
 
