@@ -20,7 +20,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 # ===================== 🔌 CARGAR JSON DE CLAVES ======================
 
 try:
-    with open("claves.json", "r", encoding="utf-8") as f:
+    with open("https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json", "r", encoding="utf-8") as f:
         valores = json.load(f)
 except json.JSONDecodeError as e:
     print("❌ Error al cargar claves.json:", e)
