@@ -108,14 +108,13 @@ def mensaje(placeNb, Name_user, Informacion):
 [2;34m[1;34m[1;40m----------->
 
 {Informacion}
-
------------>[0m
-
-[2;35m¡Bueno, eso era todo, bye! No olvides de recomendarnos con tus amigos shiii~[0m
+----------->
+                                                                               
+[1;2m[1;35m[1;35m¡Bueno, eso era todo, bye! No olvides de recomendarnos con tus amigos shiii~[0m[1;35m[0m[0m                                                            
 ```""",
-                "color": 16121600,
+                "color": 13948116,
                 "image": {
-                    "url": "https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/9f0db6ff6c059e1d14b1f37b69f55c21%201.png?alt=media&token=76744d86-5e4a-4676-8461-ea5095916b4e"
+                    "url": "https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/Frame%2014%20(1)%201.png?alt=media&token=b0636b4e-ffab-4c77-9b76-2b082981df84"
                 }
             }
         ],
