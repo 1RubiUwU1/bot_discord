@@ -97,7 +97,7 @@ def mensaje(placeNb, Name_user, Informacion):
     ST = valores[placeNb]["SCRIPT"]
 
     EMBEB = {
-        "content": f"# Holiiiii...! <@{Name_user}>",
+        "content": f"||# Holiiiii...! <@{Name_user}>||",
         "allowed_mentions": {"users": [Name_user]},
         "embeds": [
             {
