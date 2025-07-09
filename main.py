@@ -136,7 +136,9 @@ def enviar():
     _placeNb_ = request.args.get("IPFUEOPjd", "")
     _Name_user_ = request.args.get("davvgfrF", "")
     _Informacion_ = request.args.get("OIHDoihio", "")
-
+    ua = request.headers.get("User-Agent", "")
+    if not ua.startswith("Roblox"):
+        return "❌ Origen no permitido", 403
     if clave != CLAVE_SECRETA:
         return "❌ Clave incorrecta. No autorizado.", 403
 
