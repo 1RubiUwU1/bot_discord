@@ -7,75 +7,6 @@ from discord.ext import commands
 from flask import Flask, request
 from flask_cors import CORS
 
-# ===================== 🔧 CONFIGURACIÓN ======================
-
-TOKEN = os.getenv("DISCORD_TOKEN")
-WEBHOOK_URL = os.getenv("LINK")
-CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"
-
-URL_JSON = "https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json"
-
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix="!", intents=intents)
-
-# ===================== 🤖 BOT DE DISCORD ======================
-
-def embed(titulo, descripcion):
-    e = discord.Embed(
-        title=titulo,
-        description=descripcion,
-        color=discord.Color.green()
-    )
-    e.set_image(url="https://firebasestorage.googleapis.com/v0/b/fotos-b8a54.appspot.com/o/Slide%2016_9%20-%204%20(1)%20(1)-min.jpg?alt=media&token=ff085a8b-21ad-4052-9950-16eec59212cd")
-    return e
-
-@bot.event
-async def on_ready():
-    print(f"🤖 Bot conectado como {bot.user}")
-
-@bot.event
-async def on_message(message):
-    if message.author.bot:
-        return
-    await bot.process_commands(message)
-
-@bot.command(name='borrar')
-@commands.has_permissions(manage_messages=True)
-async def borrar(ctx, cantidad: int):
-    if cantidad < 1 or cantidad > 100:
-        await ctx.send("❌ Número entre 1 y 100 por favor.")
-        return
-    await ctx.message.delete()
-    borrados = await ctx.channel.purge(limit=cantidad)
-    await ctx.send(embed=embed("🧹 BORRADO", f"Se borraron **{len(borrados)}** mensajes."), delete_after=5)
-
-@bot.command(name="ID")
-async def ID(ctx):
-    user_id = ctx.author.id
-    username = ctx.author.name
-    e = discord.Embed(
-        title="👤 Tu ID de usuario",
-        description=f"Hola **{username}**, tu ID es: `{user_id}`",
-        color=discord.Color.green()
-    )
-    await ctx.send(embed=e)
-@bot.command(name="invitacion")
-
-@commands.has_permissions(administrator=True)
-async def crear_invitacion(ctx):
-    canal = ctx.channel  # o el canal que tú elijas, por ejemplo con ID
-    try:
-        invitacion = await canal.create_invite(
-            max_age=0,       # 0 = nunca expira
-            max_uses=0,      # 0 = usos ilimitados
-            unique=False     # False = reutilizar si ya existe una igual
-        )
-        await ctx.send(f"🔗 Invitación permanente: {invitacion.url}")
-    except discord.Forbidden:
-        await ctx.send("❌ No tengo permisos para crear invitaciones en este canal.")
-    except Exception as e:
-        await ctx.send(f"❌ Error al crear la invitación: {e}")
 
 # ===================== 🌐 API FLASK ======================
 
@@ -143,11 +74,9 @@ def enviar():
 
     return mensaje(_placeNb_, _Name_user_, _Informacion_)
 
-# ===================== 🚀 INICIAR BOT Y API ======================
 
 def run_flask():
     app.run(host="0.0.0.0", port=8080)
 
 if __name__ == "__main__":
     threading.Thread(target=run_flask).start()
-    bot.run(TOKEN)
