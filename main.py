@@ -7,6 +7,14 @@ from discord.ext import commands
 from flask import Flask, request
 from flask_cors import CORS
 
+# ===================== 🔧 CONFIGURACIÓN ======================
+
+WEBHOOK_URL = os.getenv("LINK")
+CLAVE_SECRETA = "baSLsVSrMMfxlfAdleg6Lqey9N5G"
+
+URL_JSON = "https://raw.githubusercontent.com/temporaltime93/bot/refs/heads/main/valor.json"
+
+
 
 # ===================== 🌐 API FLASK ======================
 
@@ -74,9 +82,10 @@ def enviar():
 
     return mensaje(_placeNb_, _Name_user_, _Informacion_)
 
+# ===================== 🚀 INICIAR BOT Y API ======================
 
-def run_flask():
-    app.run(host="0.0.0.0", port=8080)
+# def run_flask():
+#     app.run(host="0.0.0.0", port=8080)
 
 if __name__ == "__main__":
-    threading.Thread(target=run_flask).start()
+    app.run(host="0.0.0.0", port=8080)
